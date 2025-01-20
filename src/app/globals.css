@@ -1,0 +1,20 @@
+/* Reset default browser styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Global body styling */
+body {
+  font-family: 'Ubuntu', sans-serif;
+  background-color: hsl(217, 100%, 97%);
+  color: hsl(213, 96%, 18%);
+  line-height: 1.6;
+}
+
+/* Link styling */
+a {
+  text-decoration: none;
+  color: inherit;
+}
