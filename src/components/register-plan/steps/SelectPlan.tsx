@@ -7,7 +7,7 @@ import {
   CardActionArea,
   Switch,
   useTheme,
-  Grid2
+  Grid2,
 } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { Plan } from '../types';
@@ -24,7 +24,7 @@ const SelectPlan = () => {
 
   const handlePlanSelect = (plan: Plan) => {
     setValue('plan', plan, {
-      shouldValidate: true
+      shouldValidate: true,
     });
   };
 
@@ -40,8 +40,8 @@ const SelectPlan = () => {
       : 'none',
   });
 
-  const renderPlanDetails = (plan: Plan) => (
-    <Box display="flex" flexDirection="column" alignItems={{ xs: "flex-start", sm: "center" }}>
+  const PlanDetails = ({ plan }: { plan: Plan }) => (
+    <Box display="flex" flexDirection="column" alignItems={{ xs: 'flex-start', sm: 'center' }}>
       <Typography variant="h6" fontWeight="bold" mt={1}>
         {plan.name}
       </Typography>
@@ -53,30 +53,24 @@ const SelectPlan = () => {
     </Box>
   );
 
-  const renderPlanCard = (plan: Plan) => {
+  const PlanCard = ({ plan }: { plan: Plan }) => {
     const isSelected = selectedPlan?.name === plan.name;
-    
+
     return (
       <Grid2 key={plan.name} size={{ xs: 12, sm: 4 }}>
-        <Card
-          variant={isSelected ? 'outlined' : 'elevation'}
-          sx={getCardStyles(isSelected)}
-        >
+        <Card variant={isSelected ? 'outlined' : 'elevation'} sx={getCardStyles(isSelected)}>
           <CardActionArea onClick={() => handlePlanSelect(plan)}>
-            <CardContent sx={{
-              textAlign: 'center',
-              display: { xs: "flex" },
-              flexDirection: { xs: "row", sm: "column" },
-              alignItems: { xs: "center" },
-              gap: { xs: 2, sm: 0 }
-            }}>
-              <Image
-                src={plan.icon}
-                alt={`${plan.name} icon`}
-                width={40}
-                height={40}
-              />
-              {renderPlanDetails(plan)}
+            <CardContent
+              sx={{
+                textAlign: 'center',
+                display: { xs: 'flex' },
+                flexDirection: { xs: 'row', sm: 'column' },
+                alignItems: { xs: 'center' },
+                gap: { xs: 2, sm: 0 },
+              }}
+            >
+              <Image src={plan.icon} alt={`${plan.name} icon`} width={40} height={40} />
+              <PlanDetails plan={plan} />
             </CardContent>
           </CardActionArea>
         </Card>
@@ -84,12 +78,12 @@ const SelectPlan = () => {
     );
   };
 
-  const renderBillingToggle = () => (
-    <Box 
-      display="flex" 
-      justifyContent="center" 
-      alignItems="center" 
-      mt={2} 
+  const BillingToggle = () => (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      mt={2}
       bgcolor={theme.palette.background.default}
       padding={1}
       borderRadius={1}
@@ -104,9 +98,9 @@ const SelectPlan = () => {
 
       <Switch
         checked={billingCycle === BillingCycle.YEARLY}
-        onChange={(_, checked) => 
+        onChange={(_, checked) =>
           setValue('billingCycle', checked ? BillingCycle.YEARLY : BillingCycle.MONTHLY, {
-            shouldValidate: true
+            shouldValidate: true,
           })
         }
         color="primary"
@@ -132,10 +126,12 @@ const SelectPlan = () => {
       </Typography>
 
       <Grid2 container spacing={2} mt={1}>
-        {plans.map(renderPlanCard)}
+        {plans.map((plan) => (
+          <PlanCard key={plan.name} plan={plan} />
+        ))}
       </Grid2>
 
-      {renderBillingToggle()}
+      <BillingToggle />
     </Box>
   );
 };

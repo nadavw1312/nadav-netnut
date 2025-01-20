@@ -1,6 +1,6 @@
 'use client';
 import { Box, Typography, Divider, useTheme } from '@mui/material';
-import { RegisterPlanFormData, AddOn } from '../types'; 
+import { RegisterPlanFormData, AddOn } from '../types';
 import { BillingCycle } from '@constants/enums';
 import { getPriceLabel } from '../priceUtils';
 import { useFormContext } from 'react-hook-form';
@@ -12,67 +12,76 @@ type Step4Props = {
 const Summary = ({ navigateToAddOnsStep }: Step4Props) => {
   const theme = useTheme();
   const { watch } = useFormContext<RegisterPlanFormData>();
-  
+
   const plan = watch('plan');
   const addOns = watch('addOns');
   const billingCycle = watch('billingCycle');
 
-  const renderPlanSection = () => {
+  const PlanSection = () => {
     if (!plan) return null;
-    
-    const billingLabel = billingCycle === BillingCycle.MONTHLY ? BillingCycle.MONTHLY : BillingCycle.YEARLY;
+
+    const billingLabel =
+      billingCycle === BillingCycle.MONTHLY ? BillingCycle.MONTHLY : BillingCycle.YEARLY;
 
     return (
-      <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" mt={2} mb={2}>
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        mb={2}
+      >
         <Box display="flex" flexDirection="column">
           <Typography fontWeight="bold">
             {plan.name} ({billingLabel})
           </Typography>
-          <Typography 
-            onClick={navigateToAddOnsStep} 
-            variant="body2" 
-            sx={{ cursor: 'pointer' }} 
+          <Typography
+            onClick={navigateToAddOnsStep}
+            variant="body2"
+            sx={{ cursor: 'pointer' }}
             color={theme.palette.primary.main}
           >
             Change
           </Typography>
         </Box>
         <Typography>
-          {billingCycle === BillingCycle.MONTHLY 
-            ? getPriceLabel(plan.pricePerMonth) 
+          {billingCycle === BillingCycle.MONTHLY
+            ? getPriceLabel(plan.pricePerMonth)
             : getPriceLabel(plan.pricePerYear, false)}
         </Typography>
       </Box>
     );
   };
 
-  const renderAddOnItem = (addOn: AddOn) => (
+  const AddOnItem = ({ addOn }: { addOn: AddOn }) => (
     <Box key={addOn.name} display="flex" justifyContent="space-between">
       <Typography variant="body2" color={theme.palette.text.secondary}>
         {addOn.name}
       </Typography>
       <Typography>
-        {billingCycle === BillingCycle.MONTHLY 
-          ? getPriceLabel(addOn.pricePerMonth) 
+        {billingCycle === BillingCycle.MONTHLY
+          ? getPriceLabel(addOn.pricePerMonth)
           : getPriceLabel(addOn.pricePerYear, false)}
       </Typography>
     </Box>
   );
 
-  const renderAddOnsSection = () => (
+  const AddOnsSection = () => (
     <Box mt={2} display="flex" flexDirection="column" gap={2}>
-      {addOns && addOns.length > 0 
-        ? addOns.map(renderAddOnItem)
-        : <Typography>No add-ons selected.</Typography>
-      }
+      {addOns && addOns.length > 0 ? (
+        addOns.map((addOn) => <AddOnItem key={addOn.name} addOn={addOn} />)
+      ) : (
+        <Typography>No add-ons selected.</Typography>
+      )}
     </Box>
   );
 
-  const renderTotalSection = () => {
-    const planPrice = plan 
-      ? billingCycle === BillingCycle.MONTHLY 
-        ? plan.pricePerMonth 
-        : plan.pricePerYear 
+  const TotalSection = () => {
+    const planPrice = plan
+      ? billingCycle === BillingCycle.MONTHLY
+        ? plan.pricePerMonth
+        : plan.pricePerYear
       : 0;
 
     const addOnsPrice = billingCycle === BillingCycle.MONTHLY
@@ -80,7 +89,7 @@ const Summary = ({ navigateToAddOnsStep }: Step4Props) => {
       : addOns.reduce((total, addon) => total + addon.pricePerYear, 0);
 
     const totalCost = planPrice + addOnsPrice;
-    const periodLabel = billingCycle === BillingCycle.MONTHLY ? "(per month)" : "(per year)";
+    const periodLabel = billingCycle === BillingCycle.MONTHLY ? '(per month)' : '(per year)';
 
     return (
       <Box mt={2} display="flex" justifyContent="space-between">
@@ -88,8 +97,8 @@ const Summary = ({ navigateToAddOnsStep }: Step4Props) => {
           {`Total ${periodLabel}`}
         </Typography>
         <Typography variant="h6" fontWeight="bold" color={theme.palette.primary.main}>
-          {billingCycle === BillingCycle.MONTHLY 
-            ? getPriceLabel(totalCost) 
+          {billingCycle === BillingCycle.MONTHLY
+            ? getPriceLabel(totalCost)
             : getPriceLabel(totalCost, false)}
         </Typography>
       </Box>
@@ -106,12 +115,12 @@ const Summary = ({ navigateToAddOnsStep }: Step4Props) => {
       </Typography>
 
       <Box bgcolor={theme.palette.background.default} padding={1}>
-        {renderPlanSection()}
+        <PlanSection />
         <Divider />
-        {renderAddOnsSection()}
+        <AddOnsSection />
       </Box>
 
-      {renderTotalSection()}
+      <TotalSection />
     </Box>
   );
 };

@@ -1,5 +1,14 @@
 'use client';
-import { Box, Typography, Card, CardContent, CardActionArea, Checkbox, FormControlLabel, useTheme } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  CardActionArea,
+  Checkbox,
+  FormControlLabel,
+  useTheme,
+} from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { RegisterPlanFormData, AddOn } from '../types';
 import { BillingCycle } from '@constants/enums';
@@ -9,33 +18,27 @@ import { availableAddOns } from 'mocks';
 const AddOns = () => {
   const theme = useTheme();
   const { watch, setValue } = useFormContext<RegisterPlanFormData>();
-  
+
   const selectedAddOns = watch('addOns');
   const billingCycle = watch('billingCycle');
 
   const isAddOnSelected = (addOn: AddOn): boolean => {
-    return selectedAddOns?.some(selected => selected.name === addOn.name);
+    return selectedAddOns?.some((selected) => selected.name === addOn.name);
   };
 
   const handleAddOnToggle = (addOn: AddOn) => {
     const isSelected = isAddOnSelected(addOn);
     const newAddOns = isSelected
-      ? selectedAddOns.filter(item => item.name !== addOn.name)
+      ? selectedAddOns.filter((item) => item.name !== addOn.name)
       : [...(selectedAddOns || []), addOn];
 
     setValue('addOns', newAddOns, {
       shouldValidate: true,
-      shouldTouch: true
+      shouldTouch: true,
     });
   };
 
-  const getAddOnPrice = (addOn: AddOn): string => {
-    return billingCycle === BillingCycle.MONTHLY
-      ? getPriceLabel(addOn.pricePerMonth)
-      : getPriceLabel(addOn.pricePerYear, false);
-  };
-
-  const renderAddOnDescription = (addOn: AddOn) => (
+  const AddOnDescription = ({ addOn }: { addOn: AddOn }) => (
     <Box>
       <Typography variant="body1" fontWeight="bold">
         {addOn.name}
@@ -46,18 +49,22 @@ const AddOns = () => {
     </Box>
   );
 
-  const renderAddOnPrice = (addOn: AddOn) => (
+  const AddOnPrice = ({ addOn }: { addOn: AddOn }) => (
     <Typography color="primary">
-      {getAddOnPrice(addOn)}
+      {billingCycle === BillingCycle.MONTHLY
+        ? getPriceLabel(addOn.pricePerMonth)
+        : getPriceLabel(addOn.pricePerYear, false)}
     </Typography>
   );
 
-  const renderAddOnContent = (addOn: AddOn) => (
-    <CardContent sx={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    }}>
+  const AddOnContent = ({ addOn }: { addOn: AddOn }) => (
+    <CardContent
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
       <FormControlLabel
         control={
           <Checkbox
@@ -65,21 +72,23 @@ const AddOns = () => {
             onChange={() => handleAddOnToggle(addOn)}
           />
         }
-        label={renderAddOnDescription(addOn)}
+        label={<AddOnDescription addOn={addOn} />}
       />
-      {renderAddOnPrice(addOn)}
+      <AddOnPrice addOn={addOn} />
     </CardContent>
   );
 
-  const renderAddOnCard = (addOn: AddOn) => {
+  const AddOnCard = ({ addOn }: { addOn: AddOn }) => {
     const isSelected = isAddOnSelected(addOn);
-    
+
     return (
       <Card
         key={addOn.name}
         sx={{
           mb: 2,
-          bgcolor: isSelected ? theme.palette.background.default : theme.palette.background.paper,
+          bgcolor: isSelected
+            ? theme.palette.background.default
+            : theme.palette.background.paper,
           border: isSelected
             ? `2px solid ${theme.palette.primary.main}`
             : `1px solid ${theme.palette.text.secondary}`,
@@ -88,7 +97,7 @@ const AddOns = () => {
         }}
       >
         <CardActionArea onClick={() => handleAddOnToggle(addOn)}>
-          {renderAddOnContent(addOn)}
+          <AddOnContent addOn={addOn} />
         </CardActionArea>
       </Card>
     );
@@ -104,7 +113,9 @@ const AddOns = () => {
       </Typography>
 
       <Box mt={2}>
-        {availableAddOns.map(renderAddOnCard)}
+        {availableAddOns.map((addOn) => (
+          <AddOnCard key={addOn.name} addOn={addOn} />
+        ))}
       </Box>
     </Box>
   );

@@ -9,7 +9,7 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
   const theme = useTheme();
   const steps = Object.keys(STEP_TITLES).map(Number);
 
-  const renderStepCircle = (step: Step) => (
+  const StepCircle = ({ step }: { step: Step }) => (
     <Box
       sx={{
         width: 30,
@@ -20,8 +20,8 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        mr: {sm:2},
-        padding: 1
+        mr: { sm: 2 },
+        padding: 1,
       }}
     >
       <Typography
@@ -34,7 +34,7 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
     </Box>
   );
 
-  const renderStepLabel = (step: Step) => (
+  const StepLabel = ({ step }: { step: Step }) => (
     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
       <Typography variant="body2" fontSize={10} color={theme.palette.text.secondary}>
         {`STEP ${step}`}
@@ -48,9 +48,9 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
   return (
     <Stack
       spacing={4}
-      justifyContent={{xs:'center'}}
-      alignItems={{ xs: 'center', sm: 'flex-start' }} 
-      direction={{ xs: 'row', sm: 'column' }} 
+      justifyContent={{ xs: 'center' }}
+      alignItems={{ xs: 'center', sm: 'flex-start' }}
+      direction={{ xs: 'row', sm: 'column' }}
     >
       {steps.map((step: Step) => (
         <Box
@@ -61,10 +61,10 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
             color: currentStep === step ? theme.palette.background.paper : theme.palette.text.secondary,
           }}
         >
-          {renderStepCircle(step)}
-          {renderStepLabel(step)}
+          <StepCircle step={step} />
+          <StepLabel step={step} />
         </Box>
       ))}
     </Stack>
   );
-}; 
+};
