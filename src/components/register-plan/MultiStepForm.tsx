@@ -6,7 +6,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterPlanFormData } from "./types";
 import { Step, defaultFormData, formSchema, FIELDS_TO_VALIDATE } from "./formConfig";
-import { Sidebar } from "./Sidebar";
+import { Sidebar } from "./sidebar/Sidebar";
 import PersonalInfo from "./steps/PersonalInfo";
 import SelectPlan from "./steps/SelectPlan";
 import AddOns from "./steps/AddOns";

@@ -1,5 +1,5 @@
 import { Box, Typography, Stack, useTheme } from '@mui/material';
-import { Step, STEP_TITLES } from './formConfig';
+import { Step, STEP_TITLES } from '../formConfig';
 
 type StepIndicatorProps = {
   currentStep: Step;
