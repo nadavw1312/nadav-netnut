@@ -25,7 +25,6 @@ const AddOns = () => {
 
     setValue('addOns', newAddOns, {
       shouldValidate: true,
-      shouldDirty: true,
       shouldTouch: true
     });
   };

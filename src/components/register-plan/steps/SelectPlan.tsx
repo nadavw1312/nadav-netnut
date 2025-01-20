@@ -24,8 +24,7 @@ const SelectPlan = () => {
 
   const handlePlanSelect = (plan: Plan) => {
     setValue('plan', plan, {
-      shouldValidate: true,
-      shouldDirty: true,
+      shouldValidate: true
     });
   };
 
@@ -90,9 +89,9 @@ const SelectPlan = () => {
       display="flex" 
       justifyContent="center" 
       alignItems="center" 
-      mt={3} 
+      mt={2} 
       bgcolor={theme.palette.background.default}
-      padding={2}
+      padding={1}
       borderRadius={1}
     >
       <Typography
@@ -107,8 +106,7 @@ const SelectPlan = () => {
         checked={billingCycle === BillingCycle.YEARLY}
         onChange={(_, checked) => 
           setValue('billingCycle', checked ? BillingCycle.YEARLY : BillingCycle.MONTHLY, {
-            shouldValidate: true,
-            shouldDirty: true,
+            shouldValidate: true
           })
         }
         color="primary"
@@ -133,7 +131,7 @@ const SelectPlan = () => {
         You have the option of monthly or yearly billing.
       </Typography>
 
-      <Grid2 container spacing={2} mt={2}>
+      <Grid2 container spacing={2} mt={1}>
         {plans.map(renderPlanCard)}
       </Grid2>
 
